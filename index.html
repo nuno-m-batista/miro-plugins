@@ -3,11 +3,18 @@
 <head>
     <script type="text/javascript" src="https://miro.com/app/static/sdk.1.1.js"></script>
     <script type="text/javascript">
-    async function countDown(v, xx, yy) {
+    async function getTimerCoords() {
+        var vp = await miro.board.viewport.getViewport();
+        var xx = vp.x + (vp.width / 4);
+        var yy = vp.y + (vp.height / 2);
+        return { x : xx, y : yy };
+    }
+    async function countDown(v) {
     var waitASec = () => new Promise(r => setTimeout(r, 1000));
-    var st = await miro.board.widgets.create({type:'sticker', text: ''+v, x : xx, y : yy})
+    var tcoords = await getTimerCoords();
+    var st = await miro.board.widgets.create({type:'sticker', text: ''+v, x : tcoords.x, y : tcoords.y})
         .then((v) => v[0]);
-     await miro.board.viewport.zoomToObject(st);
+     //await miro.board.viewport.zoomToObject(st);
     for(var i = v - 1; i >= 0; i--) {
         await waitASec();
         await miro.board.widgets.update({id: st.id, text: ''+i});
@@ -22,7 +29,8 @@
             svgIcon: '<circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="2"/>',
             onClick: async () => {
               //alert('Hi!');
-              await countDown(45, -5000, -500);
+              //await countDown(45, -5000, -500);
+              await countDown(45);
             }
           }
         }
