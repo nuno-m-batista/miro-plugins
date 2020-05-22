@@ -23,7 +23,7 @@
     }; 
     async function setTime() {
         var time = prompt("Time (s) : ", "45");
-        if(str.match(/^[0-9]+$/) != "" && parseInt(time,10) > 0) {
+        if(time.match(/^[0-9]+$/) != "" && parseInt(time,10) > 0) {
             await countDown(time);
         } else {
             alert(time + ' should be a positive integer!');
