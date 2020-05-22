@@ -23,7 +23,11 @@
     }; 
     async function setTime() {
         var time = prompt("Time (s) : ", "45");
-        await countDown(time);
+        if(Integer.isInteger(time) && time > 0) {
+            await countDown(time);
+        } else {
+            alert(time + ' should be a positive integer!');
+        }
     }
     miro.onReady(() => {
       miro.initialize({
