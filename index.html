@@ -10,17 +10,21 @@
         return { x : xx, y : yy };
     }
     async function countDown(v) {
-    var waitASec = () => new Promise(r => setTimeout(r, 1000));
-    var tcoords = await getTimerCoords();
-    var st = await miro.board.widgets.create({type:'sticker', text: ''+v, x : tcoords.x, y : tcoords.y})
-        .then((v) => v[0]);
-     //await miro.board.viewport.zoomToObject(st);
-    for(var i = v - 1; i >= 0; i--) {
-        await waitASec();
-        await miro.board.widgets.update({id: st.id, text: ''+i});
-    }
-    await miro.board.widgets.deleteById(st.id);
+        var waitASec = () => new Promise(r => setTimeout(r, 1000));
+        var tcoords = await getTimerCoords();
+        var st = await miro.board.widgets.create({type:'sticker', text: ''+v, x : tcoords.x, y : tcoords.y})
+            .then((v) => v[0]);
+         //await miro.board.viewport.zoomToObject(st);
+        for(var i = v - 1; i >= 0; i--) {
+            await waitASec();
+            await miro.board.widgets.update({id: st.id, text: ''+i});
+        }
+        await miro.board.widgets.deleteById(st.id);
     }; 
+    async function setTime() {
+        var time = prompt("Time (s) : ", "45");
+        await countDown(time);
+    }
     miro.onReady(() => {
       miro.initialize({
         extensionPoints: {
@@ -28,7 +32,7 @@
             title: 'Timer',
             svgIcon: '<circle     id="svg_2"     stroke-width="2"     stroke="currentColor"     fill-rule="evenodd"     fill="none"     r="8"     cy="9"     cx="9" />  <line     id="svg_3"     x1="6.3352532"     y1="6.4304914"     x2="8.8431902"     y2="10.20827"     stroke-width="2"     stroke="currentColor"     fill-rule="evenodd"     fill="none" />  <line     id="svg_4"     x1="7.5288649"     y1="9.945405"     x2="13.259024"    y2="7.8501673"    stroke-width="2"     stroke="currentColor"     fill-rule="evenodd"     fill="none" />',
             onClick: async () => {
-              await countDown(45);
+              await setTime();
             }
           }
         }
